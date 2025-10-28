@@ -2,7 +2,7 @@ Explicação do Script Atualizado
 Este é um bot profissionalizado para envio de mensagens automáticas no WhatsApp. Aqui está sua estrutura:
 
 Configurações (linhas 5-9):
-NUMERO_DESTINO: Número de telefone (você alterou para "+55119836507")
+NUMERO_DESTINO: Número de telefone
 MENSAGEM_PADRAO: Texto da mensagem
 TEMPO_ESPERA: 15 segundos para carregar o WhatsApp Web
 Função principal (linhas 11-22):
