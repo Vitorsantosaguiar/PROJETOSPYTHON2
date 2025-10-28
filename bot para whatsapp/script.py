@@ -2,26 +2,36 @@ import pywhatkit as kit
 import datetime
 from time import sleep
 
-try:
+# Configurações (pode ser movido para um arquivo .env depois)
+CONFIG = {
+    "NUMERO_DESTINO": "+5511983650773",
+    "MENSAGEM_PADRAO": "Olá! Esta é uma mensagem automática enviada via WhatsApp.",
+    "TEMPO_ESPERA": 15  # segundos
+}
 
-    numero = "+5511983650773"  # Substitua pelo número de telefone desejado
+def enviar_mensagem_whatsapp(numero, mensagem, tentativas=2):
+    """Envia mensagem via WhatsApp com tratamento de erros"""
+    hora = datetime.datetime.now().hour
+    minuto = datetime.datetime.now().minute + 2
+    
+    for tentativa in range(tentativas):
+        try:
+            kit.sendwhatmsg(numero, mensagem, hora, minuto)
+            sleep(CONFIG["TEMPO_ESPERA"])
+            return True
+        except Exception as e:
+            print(f"Tentativa {tentativa+1} falhou: {str(e)}")
+            sleep(30)
+    return False
 
-    mensagem = "Olá! Esta é uma mensagem automática enviada via WhatsApp."
-
-    hora_atual = datetime.datetime.now().hour
-
-    minuto_atual = datetime.datetime.now().minute + 2  # Enviar a mensagem em 2 minutos
-
-    kit.sendwhatmsg(numero, mensagem, hora_atual, minuto_atual)
-
-    sleep(15)  # Espera 15 segundos para garantir que o WhatsApp Web carregue
-
-    # Informar ao usuário que a mensagem está sendo enviada
-    print('Aguarde... A mensagem será enviada em breve!')
-
-    kit.sendwhatmsg(numero, mensagem, hora_atual, minuto_atual)
-
-    print('Mensagem enviada com sucesso!')
-
-except Exception as e:
-    print(f"Erro ao enviar mensagem: {e}")
+if __name__ == "__main__":
+    try:
+        print("Iniciando envio de mensagem...")
+        if enviar_mensagem_whatsapp(CONFIG["NUMERO_DESTINO"], CONFIG["MENSAGEM_PADRAO"]):
+            print("✅ Mensagem enviada com sucesso!")
+        else:
+            print("❌ Falha ao enviar mensagem após múltiplas tentativas")
+    except KeyboardInterrupt:
+        print("\nOperação cancelada pelo usuário")
+    except Exception as e:
+        print(f"Erro crítico: {str(e)}")
