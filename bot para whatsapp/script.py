@@ -16,7 +16,7 @@ def enviar_mensagem_whatsapp(numero, mensagem, tentativas=2):
     
     for tentativa in range(tentativas):
         try:
-            kit.sendwhatmsg(numero, mensagem, hora, minuto)
+            kit.sendwhatmsg(numero, mensagem, hora, minuto, wait_time=15, tab_close=True)
             sleep(CONFIG["TEMPO_ESPERA"])
             return True
         except Exception as e:
@@ -28,6 +28,7 @@ if __name__ == "__main__":
     try:
         print("Iniciando envio de mensagem...")
         if enviar_mensagem_whatsapp(CONFIG["NUMERO_DESTINO"], CONFIG["MENSAGEM_PADRAO"]):
+            
             print("✅ Mensagem enviada com sucesso!")
         else:
             print("❌ Falha ao enviar mensagem após múltiplas tentativas")
