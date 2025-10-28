@@ -2,21 +2,26 @@ import pywhatkit as kit
 import datetime
 from time import sleep
 
-numero = "+5511999999999"  # Substitua pelo número de telefone desejado
+try:
 
-mensagem = "Olá! Esta é uma mensagem automática enviada via WhatsApp."
+    numero = "+5511983650773"  # Substitua pelo número de telefone desejado
 
-hora_atual = datetime.datetime.now().hour
+    mensagem = "Olá! Esta é uma mensagem automática enviada via WhatsApp."
 
-minuto_atual = datetime.datetime.now().minute + 2  # Enviar a mensagem em 2 minutos
+    hora_atual = datetime.datetime.now().hour
 
-kit.sendwhatmsg(numero, mensagem, hora_atual, minuto_atual)
+    minuto_atual = datetime.datetime.now().minute + 2  # Enviar a mensagem em 2 minutos
 
-sleep(15)  # Espera 15 segundos para garantir que o WhatsApp Web carregue
+    kit.sendwhatmsg(numero, mensagem, hora_atual, minuto_atual)
 
-# Informar ao usuário que a mensagem está sendo enviada
-print('Aguarde... A mensagem será enviada em breve!')
+    sleep(15)  # Espera 15 segundos para garantir que o WhatsApp Web carregue
 
-kit.sendwhatmsg(numero, mensagem, hora_atual, minuto_atual)
+    # Informar ao usuário que a mensagem está sendo enviada
+    print('Aguarde... A mensagem será enviada em breve!')
 
-print('Mensagem enviada com sucesso!')
+    kit.sendwhatmsg(numero, mensagem, hora_atual, minuto_atual)
+
+    print('Mensagem enviada com sucesso!')
+
+except Exception as e:
+    print(f"Erro ao enviar mensagem: {e}")
