@@ -108,3 +108,8 @@ Time: 21:33
 Phone Number: +5511983650773
 Message: Olá!
 --------------------
+Date: 29/10/2025
+Time: 21:34
+Phone Number: +5511973553528
+Message: Olá!, eu sou o robô do whatsapp
+--------------------
