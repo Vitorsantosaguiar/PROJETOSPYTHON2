@@ -8,3 +8,103 @@ Time: 19:32
 Phone Number: +5511983650773
 Message: Olá! Esta é uma mensagem automática enviada via WhatsApp.
 --------------------
+Date: 28/10/2025
+Time: 19:37
+Phone Number: +5511983650773
+Message: Olá! Esta é uma mensagem automática enviada via WhatsApp.
+--------------------
+Date: 28/10/2025
+Time: 19:40
+Phone Number: +5511983650773
+Message: Olá! Esta é uma mensagem automática enviada via WhatsApp.
+--------------------
+Date: 28/10/2025
+Time: 21:15
+Phone Number: +55nan
+Message: nan
+--------------------
+Date: 28/10/2025
+Time: 21:16
+Phone Number: +555511983650773.0
+Message: Olá!
+--------------------
+Date: 28/10/2025
+Time: 21:17
+Phone Number: +555511973553528.0
+Message: Olá!, eu sou o robô do whatsapp
+--------------------
+Date: 28/10/2025
+Time: 21:19
+Phone Number: +55nan
+Message: nan
+--------------------
+Date: 28/10/2025
+Time: 21:20
+Phone Number: +5511983650773.0
+Message: Olá!
+--------------------
+Date: 28/10/2025
+Time: 21:21
+Phone Number: +5511973553528.0
+Message: Olá!, eu sou o robô do whatsapp
+--------------------
+Date: 29/10/2025
+Time: 21:6
+Phone Number: +555511983650773.0
+Message: Olá!
+--------------------
+Date: 29/10/2025
+Time: 21:6
+Phone Number: +555511973553528.0
+Message: Olá!, eu sou o robô do whatsapp
+--------------------
+Date: 29/10/2025
+Time: 21:7
+Phone Number: +555511983650773.0
+Message: Olá!
+--------------------
+Date: 29/10/2025
+Time: 21:7
+Phone Number: +555511973553528.0
+Message: Olá!, eu sou o robô do whatsapp
+--------------------
+Date: 29/10/2025
+Time: 21:8
+Phone Number: +555511983650773.0
+Message: Olá!
+--------------------
+Date: 29/10/2025
+Time: 21:8
+Phone Number: +555511973553528.0
+Message: Olá!, eu sou o robô do whatsapp
+--------------------
+Date: 29/10/2025
+Time: 21:12
+Phone Number: +55
+Message: nan
+--------------------
+Date: 29/10/2025
+Time: 21:12
+Phone Number: +555511983650
+Message: Olá!
+--------------------
+Date: 29/10/2025
+Time: 21:12
+Phone Number: +555511973553
+Message: Olá!, eu sou o robô do whatsapp
+--------------------
+Date: 29/10/2025
+Time: 21:28
+Phone Number: +5511983650773
+Message: Olá!
+--------------------
+Date: 29/10/2025
+Time: 21:30
+Phone Number: +5511973553528
+Message: Olá!, eu sou o robô do whatsapp
+--------------------
+Date: 29/10/2025
+Time: 21:33
+Phone Number: +5511983650773
+Message: Olá!
+--------------------
