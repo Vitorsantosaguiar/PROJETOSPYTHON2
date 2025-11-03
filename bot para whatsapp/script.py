@@ -1,38 +1,68 @@
 import pywhatkit as kit
 import pandas as pd
 import re
-from time import sleep
+from time import sleep, time
 import datetime
+import logging
+import urllib.request
+
+# Solução para a importação das exceções
+try:
+    from pywhatkit.exceptions import WhatsAppException
+except ImportError:
+    print("⚠️ Usando fallback para WhatsAppException")
+    class WhatsAppException(Exception):
+        pass
+
+# Configuração de logging
+logging.basicConfig(
+    filename='whatsapp_bot.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    encoding='utf-8'
+)
+
+# Controle de taxa de envio
+ULTIMO_ENVIO = 0
+INTERVALO_MINIMO = 2  # segundos
+
+def verificar_conexao():
+    """Verifica se há conexão com a internet"""
+    try:
+        urllib.request.urlopen('http://google.com', timeout=5)
+        return True
+    except:
+        logging.warning("Sem conexão com a internet")
+        return False
 
 def formatar_numero(numero):
-    """Corrige números mantendo exatamente 11 dígitos após +55"""
+    """Corrige números mantendo formato internacional"""
     try:
-        # Passo 1: Limpeza básica
         numero = str(numero).strip()
         numero = re.sub(r'[^0-9+]', '', numero)
         
-        # Passo 2: Remove zeros finais problemáticos
+        # Remove zeros finais
         while len(numero) > 11 and numero.endswith('0'):
             numero = numero[:-1]
             
-        # Passo 3: Remove 5's extras no início
+        # Remove 5's extras
         if numero.startswith('555'):
             numero = '55' + numero[3:]
         elif numero.startswith('55') and len(numero) > 11:
             numero = '55' + numero[2:] if numero[2] == '5' else numero
             
-        # Passo 4: Formatação internacional
+        # Formatação internacional
         if not numero.startswith('+'):
             numero = f"+55{numero.lstrip('55')}"
             
-        # Passo 5: Validação rigorosa
+        # Validação final
         if not re.match(r'^\+55\d{11}$', numero):
-            raise ValueError(f"Formato inválido. Esperado: +55DDDNNNNNNNN | Recebido: {numero}")
+            raise ValueError(f"Formato inválido: {numero}")
             
         return numero
         
     except Exception as e:
-        print(f"❌ Erro na formatação: {str(e)}")
+        logging.error(f"Erro ao formatar número: {str(e)}")
         return None
 
 def carregar_contatos(caminho_planilha):
@@ -40,61 +70,79 @@ def carregar_contatos(caminho_planilha):
     try:
         df = pd.read_excel(caminho_planilha)
         
-        # Verifica colunas obrigatórias
         if not {'numero', 'mensagem'}.issubset(df.columns):
-            print("❌ Planilha deve conter colunas: 'numero' e 'mensagem'")
+            logging.error("Planilha sem colunas obrigatórias")
             return []
         
-        # Processamento dos números
         df = df.dropna(subset=['numero', 'mensagem'])
         df['numero'] = df['numero'].apply(formatar_numero)
         df = df.dropna(subset=['numero'])
         
+        logging.info(f"Carregados {len(df)} contatos válidos")
         return df.to_dict('records')
     except Exception as e:
-        print(f"❌ Erro ao processar planilha: {str(e)}")
+        logging.critical(f"Erro ao carregar planilha: {str(e)}")
         return []
 
 def enviar_mensagem(numero, mensagem, tentativas=2):
-    """Envia mensagem com tempo de espera reduzido"""
+    """Envia mensagem com todas as otimizações"""
+    global ULTIMO_ENVIO
+    
     try:
-        # Configura tempo de envio (1 minuto no futuro)
-        now = datetime.datetime.now()
-        hora = now.hour
-        minuto = now.minute + 1
+        if not verificar_conexao():
+            return False
+
+        # Controle de taxa de envio
+        agora = time()
+        if agora - ULTIMO_ENVIO < INTERVALO_MINIMO:
+            sleep(INTERVALO_MINIMO - (agora - ULTIMO_ENVIO))
+        ULTIMO_ENVIO = time()
         
+        now = datetime.datetime.now()
         for tentativa in range(tentativas):
             try:
-                print(f"\n⚡ Tentativa {tentativa+1} para {numero}...")
+                logging.info(f"Enviando para {numero} (Tentativa {tentativa+1})")
                 
                 kit.sendwhatmsg(
                     phone_no=numero,
                     message=mensagem,
-                    time_hour=hora,
-                    time_min=minuto,
-                    wait_time=8,    # Tempo reduzido para carregar
+                    time_hour=now.hour,
+                    time_min=now.minute + 1,
+                    wait_time=8,
                     tab_close=False,
-                    close_time=1    # Fecha rápido após enviar
+                    close_time=1
                 )
                 
+                logging.info(f"Sucesso: {numero}")
                 print(f"✅ Enviado para {numero}")
                 return True
                 
+            except WhatsAppException as e:
+                logging.warning(f"Erro WhatsApp (Tentativa {tentativa+1}): {str(e)}")
+                print(f"⚠️ Erro WhatsApp: {str(e)}")
+                sleep(5)
             except Exception as e:
+                logging.error(f"Erro inesperado (Tentativa {tentativa+1}): {str(e)}")
                 print(f"⚠️ Erro: {str(e)}")
-                sleep(5)  # Espera curta entre tentativas
+                sleep(5)
                 
+        logging.warning(f"Falha após {tentativas} tentativas: {numero}")
         return False
         
     except Exception as e:
+        logging.critical(f"Falha crítica: {str(e)}")
         print(f"❌ Falha crítica: {str(e)}")
         return False
 
 if __name__ == "__main__":
+    print("Iniciando WhatsApp Bot...")
+    logging.info("Iniciando execução")
+    
     contatos = carregar_contatos("contatos.xlsx")
     
     if not contatos:
         print("❌ Nenhum contato válido encontrado")
+        logging.warning("Nenhum contato válido")
     else:
         print(f"📊 Total de contatos válidos: {len(contatos)}")
         
@@ -104,4 +152,7 @@ if __name__ == "__main__":
             else:
                 print(f"❌ Falha: {contato['numero']}")
             
-            sleep(2)  # Intervalo ultrarrápido entre contatos
+            sleep(2)
+    
+    logging.info("Execução concluída")
+    print("✅ Processo finalizado")
