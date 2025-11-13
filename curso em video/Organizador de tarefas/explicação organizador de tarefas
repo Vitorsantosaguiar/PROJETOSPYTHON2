@@ -1,0 +1,31 @@
+Este é um organizador de tarefas simples em Python. Aqui está o que o script faz:
+
+Fluxo de Execução:
+Inicializa uma lista vazia (tarefas = list()) para armazenar as tarefas do usuário
+
+Loop infinito que:
+
+Solicita ao usuário que digite uma tarefa
+Adiciona a tarefa à lista com append()
+Pergunta se deseja continuar
+Extrai apenas o primeiro caractere da resposta e converte para maiúscula
+Se o usuário digitar 'N', o loop é interrompido
+Exibe o resultado mostrando:
+
+Uma linha decorativa com '-='
+O título "TAREFAS:"
+Todas as tarefas numeradas (começando de 1)
+Outra linha decorativa
+Uma mensagem de encerramento
+
+Exemplo de uso:
+Digite uma tarefa: Estudar Python
+Deseja continuar? [S/N] S
+Digite uma tarefa: Fazer exercícios
+Deseja continuar? [S/N] N
+------------------------------
+TAREFAS:
+1 - Estudar Python
+2 - Fazer exercícios
+------------------------------
+Programa encerrado. Tenha um bom dia!
